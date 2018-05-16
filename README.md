@@ -1,5 +1,5 @@
 # Calendar
-Tools for calculating working days and holidays
+Tools for calculating working days and holidays in Brazil
 
 | Feriado  | Considerado  |
 |---|---|
