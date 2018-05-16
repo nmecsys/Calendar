@@ -1,7 +1,7 @@
 # Calendar
 Tools for calculating working days and holidays
 
-| Feriado  | Considero  |
+| Feriado  | Considerado  |
 |---|---|
 |Confraternização Universal   |  :heavy_check_mark: |  
 |Paixão de Cristo   |  :heavy_check_mark: |   
