@@ -6,27 +6,20 @@ if(require(pacman)){
 }
 
 
-#feriados = fread("feriados_nacionais.csv",sep = ";",encoding = "Latin-1")
-#datas = stringr::str_split(feriados$Data,pattern = "/") 
-
-# for(i in 1:length(datas)){
-#   aux = paste(datas[[i]][3],datas[[i]][2],datas[[i]][1],sep = "-")
-#   aux = aux[[1]]       
-#   datas[i] = aux
-# }
-# feriados$Data = datas
-# rm(i,aux)  
-#   
-# feriados_sabados = feriados %>% filter(Dia.da.Semana == "sábado")
-
-
-dias_uteis <- function(from = "2001-01-01",to ='2050-12-31' ,fds = c("saturday","sunday")){
+dias_uteis <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,fds = c("saturday","sunday"),
+                       ts = F){
   
   if(as.Date(from) < "2001-01-01"){
     stop("Dias uteis abaixo de janeiro de 2001 indisponiveis!")
   }
   
-  cal  <- create.calendar("Brazil/ANBIMA", holidays=holidaysANBIMA, weekdays=fds)
+  if(!is.null(feriados)){
+    cal  <- create.calendar("Brazil/ANBIMA", holidays=feriados, weekdays=fds,financial =F)
+  }else{
+    cal  <- create.calendar("Brazil/ANBIMA", holidays=feriados_datas, weekdays=fds,financial =F)
+  }
+  
+  
   dias  = bizseq(from, to, cal)
   datas = seq.Date(as.Date(from),as.Date(to),by = 'month')
   
@@ -46,10 +39,28 @@ dias_uteis <- function(from = "2001-01-01",to ='2050-12-31' ,fds = c("saturday",
     final$count[i] = count
   }
   
-  ano = format(from,"%Y") %>% as.numeric()
-  mes  = format(from,"%m") %>% as.numeric()
-  serie_dias_uteis = ts(final$count,start = c(ano,mes),frequency = 12)
-  return(serie_dias_uteis)
+  
+  if(ts){
+    ano = format(from,"%Y") %>% as.numeric()
+    mes  = format(from,"%m") %>% as.numeric()
+    serie_dias_uteis = ts(final$count,start = c(ano,mes),frequency = 12)  
+    return(serie_dias_uteis)
+  }
+  
+  return(final)
 }
 
+feriados = read.csv2("data/feriados_nacionais.csv",encoding = "Latin-1",stringsAsFactors = F)
+feriados$Data  = feriados$Data %>% as.character()
 
+for(i in 1:nrow(feriados)){
+  if(feriados$Dia.da.Semana[i] == "segunda-feira" && feriados$Feriado[i] =="Carnaval"){
+    feriados[i,1] = NA
+  }
+}
+
+feriados = na.omit(feriados)
+feriados_datas = feriados$Data
+feriados_datas = strptime(as.character(feriados_datas), "%d/%m/%Y") %>% as.Date()
+
+calendario = dias_uteis(feriados = feriados_datas,fds = c("sunday"))
