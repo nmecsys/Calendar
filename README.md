@@ -1,7 +1,7 @@
 # Calendar
 Tools for calculating working days and holidays in Brazil
 
-| Feriado  | Considerado  |
+| Holiday  | Considered  |
 |---|---|
 |Universal Confraternization   |  :heavy_check_mark: |  
 |Passion of christ  |  :heavy_check_mark: |   
