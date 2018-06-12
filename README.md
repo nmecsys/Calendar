@@ -20,5 +20,5 @@ Tools for calculating working days and holidays in Brazil
 # usage
 
 ```
-Trading_days = rading_days(fds = c("sunday"))
+Trading_days = trading_days(fds = c("sunday"))
 ```
