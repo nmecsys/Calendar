@@ -3,16 +3,16 @@ Tools for calculating working days and holidays in Brazil
 
 | Feriado  | Considerado  |
 |---|---|
-|Confraternização Universal   |  :heavy_check_mark: |  
-|Paixão de Cristo   |  :heavy_check_mark: |   
-|Independência do Brasil   | :heavy_check_mark:  |   
-|Finados|:heavy_check_mark:|
-|Carnaval (segunda-feira)|:x:|
-|Carnaval (terça-feira)|:heavy_check_mark:|
+|Universal Confraternization   |  :heavy_check_mark: |  
+|Passion of christ  |  :heavy_check_mark: |   
+|Independence of Brazil   | :heavy_check_mark:  |   
+|Dead|:heavy_check_mark:|
+|Carnival (Monday)|:x:|
+|Carnival (Tuesday)|:heavy_check_mark:|
 |Tiradentes|:heavy_check_mark:|
 |Corpus Christi|:heavy_check_mark:|
-|Dia da consciência negra|:x:|
-|Nossa Sr.a Aparecida - Padroeira do Brasil|:heavy_check_mark:|
-|Proclamação da República|:heavy_check_mark:|
-|Dia do Trabalho|:heavy_check_mark:|
-|Natal|:heavy_check_mark:|
+|Black conscience day|:x:|
+|Nossa Sr.a Aparecida - Patroness of Brazil|:heavy_check_mark:|
+|Proclamation of the Republic|:heavy_check_mark:|
+|Labor Day|:heavy_check_mark:|
+|Christmas|:heavy_check_mark:|
