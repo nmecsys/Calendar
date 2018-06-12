@@ -6,7 +6,7 @@ if(require(pacman)){
 }
 
 
-dias_uteis <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,fds = c("saturday","sunday"),
+trading_days <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,fds = c("saturday","sunday"),
                        ts = F){
   
   if(as.Date(from) < "2001-01-01"){
@@ -63,4 +63,4 @@ feriados = na.omit(feriados)
 feriados_datas = feriados$Data
 feriados_datas = strptime(as.character(feriados_datas), "%d/%m/%Y") %>% as.Date()
 
-calendario = dias_uteis(feriados = feriados_datas,fds = c("sunday"))
+calendario = trading_days(feriados = feriados_datas,fds = c("sunday"))
