@@ -1,8 +1,8 @@
 if(require(pacman)){
-  p_load(bizdays,data.table,dplyr,tibble,crayon)
+  p_load(bizdays,data.table,dplyr,tibble,glue)
 }else{
   install.packages(pacman)
-  pacman::p_load(bizdays,data.table,dplyr,tibble,crayon)
+  pacman::p_load(bizdays,data.table,dplyr,tibble,glue)
 }
 
 
@@ -35,7 +35,7 @@ trading_days <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,f
   
   for(i in 1:nrow(final)){
     count = dias_d %>% filter(format(dias,"%Y-%m") == format(final$data[i],"%Y-%m")) %>% select(dias) %>% count()
-    message(paste(yellow(i),"-",yellow(final$data[i]),"-","dias uteis:",green(count),sep=" "))
+    message(glue({i} - {final$data[i]} - dias uteis: {count})
     final$count[i] = count
   }
   
