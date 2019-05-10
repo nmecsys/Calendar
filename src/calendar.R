@@ -1,13 +1,50 @@
 if(require(pacman)){
-  p_load(bizdays,data.table,dplyr,tibble,glue)
+  p_load(bizdays,data.table,dplyr,tibble,glue,BETS)
 }else{
   install.packages(pacman)
-  pacman::p_load(bizdays,data.table,dplyr,tibble,glue)
+  pacman::p_load(bizdays,data.table,dplyr,tibble,glue,BETS)
 }
 
 
-trading_days <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,fds = c("saturday","sunday"),
-                       ts = F){
+
+
+feriadosFunctionDummy <- function(feriadotipo){
+  feriados = read.csv2("data/feriados_nacionais.csv",encoding = "Latin-1",stringsAsFactors = F)
+  for (i in 1:nrow(feriados)) {
+    if (feriados$Dia.da.Semana[i] == "segunda-feira" && feriados$Feriado[i] =="Carnaval"){
+      feriados[i,1] = NA
+    }
+  }
+  feriados$Data  = feriados$Data %>% as.character()
+  '%out%' <- function(x,y){!(x %in% y)}
+  feriadoLista = unique(feriados$Feriado)
+  if(any(feriadotipo %out% feriadoLista)){ 
+    print(glue('Tipo de feriado inserido nao esta disponivel'))
+    glue("|>{feriadoLista}")
+    stop()
+  }else{
+    datas = feriados %>% 
+        filter(Feriado %in% feriadotipo) %>% 
+        pull(Data)
+    datas = as.Date(datas,'%d/%m/%Y')
+    anos  = as.numeric(str_extract(datas,'\\d{4}'))
+    meses  = as.numeric(month(datas))
+    lista = list()
+    for(i in 1:length(anos)){
+      lista[[i]] = c(anos[i],meses[i])
+    }
+    dummy = BETS::dummy(start = c(2001,01) ,end = c(2078,12),date = lista,frequency = 12)
+    return(dummy) 
+  }
+  
+}
+
+
+
+
+
+
+trading_days <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,fds = c("saturday","sunday"),ts = F){
   
   if(as.Date(from) < "2001-01-01"){
     stop("Dias uteis abaixo de janeiro de 2001 indisponiveis!")
@@ -50,18 +87,10 @@ trading_days <- function(from = "2001-01-01",to ='2050-12-31',feriados = NULL ,f
   return(final)
 }
 
-feriados = read.csv2("data/feriados_nacionais.csv",encoding = "Latin-1",stringsAsFactors = F)
-feriados$Data  = feriados$Data %>% as.character()
 
-for(i in 1:nrow(feriados)){
-  if(feriados$Dia.da.Semana[i] == "segunda-feira" && feriados$Feriado[i] =="Carnaval"){
-    feriados[i,1] = NA
-  }
-}
 
-feriados = na.omit(feriados)
-feriados_datas = feriados$Data
-feriados_datas = strptime(as.character(feriados_datas), "%d/%m/%Y") %>% as.Date()
+dummy = feriadosFunctionDummy(feriadotipo = c('Carnaval','Corpus Christi'))
+
 
 calendario = trading_days(feriados = feriados_datas,fds = c("sunday"))
 calendario_ts = ts(calendario$count,start = c(2001,01),frequency = 12)
